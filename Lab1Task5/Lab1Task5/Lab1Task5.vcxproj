@@ -129,6 +129,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lab1Task6.cpp" />
+    <ClCompile Include="MergeArrays.cpp" />
+    <ClCompile Include="Sort.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MergeArrays.h" />
+    <ClInclude Include="Sort.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
