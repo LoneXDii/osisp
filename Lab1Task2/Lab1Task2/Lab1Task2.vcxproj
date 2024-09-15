@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{04ef1e47-8501-4337-af17-b7cda6d13db5}</ProjectGuid>
-    <RootNamespace>Lab1Task5</RootNamespace>
+    <ProjectGuid>{a112f442-6971-4d0a-8977-5376d4126acf}</ProjectGuid>
+    <RootNamespace>Lab1Task2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Lab1Task6</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,13 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Lab1Task6.cpp" />
-    <ClCompile Include="MergeArrays.cpp" />
-    <ClCompile Include="Sort.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MergeArrays.h" />
-    <ClInclude Include="Sort.h" />
+    <ClCompile Include="Lab1Task2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
