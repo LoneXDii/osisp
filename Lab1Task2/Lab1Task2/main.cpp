@@ -32,7 +32,7 @@ void StartProcess(const wchar_t* executablePath) {
         NULL, NULL, NULL, FALSE,
         0, NULL, NULL,
         &si, &pi)) {
-
+        
         ProcessInfo pInfo;
         pInfo.hProcess = pi.hProcess;
         pInfo.processId = pi.dwProcessId;
