@@ -127,7 +127,7 @@ int main() {
         processAsync(MIN_BUFFER_SIZE * buff_exp);
         auto endAsync = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> durationAsync = endAsync - startAsync;
-        std::cout << "Async: " << durationAsync.count() << " " << "Buffer size: " << MIN_BUFFER_SIZE * buff_exp << " " << "value: " << lettersAsync << "\n";
+        std::cout << "Async: Time: " << durationAsync.count() << " " << "Buffer size: " << MIN_BUFFER_SIZE * buff_exp << " " << "Value: " << lettersAsync << "\n";
         lettersAsync = 0;
     }
 
@@ -136,6 +136,6 @@ int main() {
     auto end = std::chrono::high_resolution_clock::now();
     
     std::chrono::duration<double> duration = end - start;
-    std::cout << "Default: " << duration.count() << " " << "value: " << letters << "\n";
+    std::cout << "Default: Time: " << duration.count() << " " << "Value: " << letters << "\n";
     return 0;
 }
