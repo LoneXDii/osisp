@@ -19,18 +19,18 @@ struct ClientInfo {
     ClientInfo(SOCKET s, const char* n)
         : socket(s), msgs() {
         strncpy_s(name, n, sizeof(name) - 1);
-        name[sizeof(name) - 1] = '\0';
+        name[sizeof(name) - 1] = '\0';  
     }
 };
 
 struct addrinfo* result = NULL, * ptr = NULL, hints;
-std::vector<ClientInfo> clientSockets;
-std::mutex clientMutex;
+std::vector<ClientInfo> clientSockets; 
+std::mutex clientMutex;            
 
 void static BroadcastMessage(const std::string& message, SOCKET senderSocket) {
     std::lock_guard<std::mutex> lock(clientMutex);
     for (const auto& client : clientSockets) {
-        if (client.socket != senderSocket) {
+        if (client.socket != senderSocket) {  
             send(client.socket, message.c_str(), int(message.size()), 0);
         }
     }
@@ -46,11 +46,11 @@ void HandleClient(SOCKET ClientSocket) {
         closesocket(ClientSocket);
         return;
     }
-    recvbuf[iResult] = '\0';
+    recvbuf[iResult] = '\0';  
     char clientName[21];
 
     strncpy_s(clientName, recvbuf, sizeof(clientName) - 1);
-    clientName[sizeof(clientName) - 1] = '\0';
+    clientName[sizeof(clientName) - 1] = '\0';  
 
     {
         std::lock_guard<std::mutex> lock(clientMutex);
@@ -59,7 +59,7 @@ void HandleClient(SOCKET ClientSocket) {
     std::cout << "Client connected: " << recvbuf << std::endl;
 
     do {
-        iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
+        iResult = recv(ClientSocket, recvbuf, recvbuflen, 0); 
         std::cout << "Bytes received: " << iResult << std::endl;
         if (iResult > 0) {
             recvbuf[iResult] = '\0';
@@ -68,21 +68,20 @@ void HandleClient(SOCKET ClientSocket) {
             if (strlen(recvbuf) == 0) {
                 std::cout << "Client " << clientName << " disconnected." << std::endl;
                 break;
-            }
-            else {
+            } else {
                 std::cout << "Message received: " << recvbuf << std::endl;
             }
 
             size_t arrowPos = message.find("->");
             if (arrowPos != std::string::npos) {
                 std::string actualMessage = message.substr(0, arrowPos);
-                std::string targetID = message.substr(arrowPos + 2);
+                std::string targetID = message.substr(arrowPos + 2);     
 
                 {
                     std::lock_guard<std::mutex> lock(clientMutex);
                     for (auto& client : clientSockets) {
                         if (client.socket == ClientSocket) {
-                            client.msgs.push_back(actualMessage);
+                            client.msgs.push_back(actualMessage); 
                             break;
                         }
                     }
@@ -105,15 +104,13 @@ void HandleClient(SOCKET ClientSocket) {
                     std::string errorMsg = "Error: Client with ID '" + targetID + "' not found.\n";
                     send(ClientSocket, errorMsg.c_str(), static_cast<int>(errorMsg.size()), 0);
                 }
-            }
-            else {
+            } else {
                 std::string name(clientName);
                 std::string broadcastMessage = name + ": " + message;
                 BroadcastMessage(broadcastMessage, ClientSocket);
             }
 
-        }
-        else {
+        } else {
             std::cout << "Recv failed: " << WSAGetLastError() << std::endl;
             break;
         }
@@ -135,7 +132,7 @@ void HandleClient(SOCKET ClientSocket) {
 }
 
 int main() {
-    WSADATA wsaData;
+    WSADATA wsaData; 
 
     int iResult;
 
@@ -146,10 +143,10 @@ int main() {
     }
 
     ZeroMemory(&hints, sizeof(hints));
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    hints.ai_protocol = IPPROTO_TCP;
-    hints.ai_flags = AI_PASSIVE;
+    hints.ai_family = AF_INET;              
+    hints.ai_socktype = SOCK_STREAM;        
+    hints.ai_protocol = IPPROTO_TCP;        
+    hints.ai_flags = AI_PASSIVE;            
 
     iResult = getaddrinfo("0.0.0.0", DEFAULT_PORT, &hints, &result);
     if (iResult != 0) {
@@ -169,7 +166,7 @@ int main() {
     iResult = bind(ListenSocket, result->ai_addr, (int)result->ai_addrlen);
     if (iResult == SOCKET_ERROR) {
         std::cout << "bind failed with error: " << WSAGetLastError() << std::endl;
-        freeaddrinfo(result);
+        freeaddrinfo(result);                               
         closesocket(ListenSocket);
         WSACleanup();
         return 1;
@@ -190,7 +187,7 @@ int main() {
         ClientSocket = accept(ListenSocket, NULL, NULL);
         if (ClientSocket == INVALID_SOCKET) {
             std::cout << "accept failed: " << WSAGetLastError() << std::endl;
-            continue;
+            continue; 
         }
 
         std::cout << "New client connected." << std::endl;
