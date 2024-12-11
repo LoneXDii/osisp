@@ -12,7 +12,6 @@
 #include <atomic>
 #include <stdlib.h>
 
-// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
@@ -20,7 +19,7 @@
 
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
-std::atomic<bool> isRunning(true); // flag for ending sending
+std::atomic<bool> isRunning(true); 
 
 SOCKET ConnectSocket = INVALID_SOCKET;
 
@@ -97,7 +96,6 @@ int main()
     WSADATA wsaData;
     int iResult;
 
-    // Initialize Winsock
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
         printf("WSAStartup failed with error: %d\n", iResult);
@@ -111,7 +109,6 @@ int main()
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
 
-    // Resolve the server address and port
     iResult = getaddrinfo("127.0.0.1", DEFAULT_PORT, &hints, &result);
     if (iResult != 0) {
         printf("getaddrinfo failed: %d\n", iResult);
@@ -119,10 +116,8 @@ int main()
         return 1;
     }
 
-    // Create a SOCKET for connecting to server
     ConnectSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
 
-    // Check for errors to ensure that the socket is a valid socket
     if (ConnectSocket == INVALID_SOCKET) {
         printf("Error at socket(): %ld\n", WSAGetLastError());
         freeaddrinfo(result);
@@ -130,14 +125,12 @@ int main()
         return 1;
     }
 
-    // Connect to server.
     iResult = connect(ConnectSocket, result->ai_addr, (int)result->ai_addrlen);
     if (iResult == SOCKET_ERROR) {
         closesocket(ConnectSocket);
         ConnectSocket = INVALID_SOCKET;
     }
 
-    // Free the resources returned by getaddrinfo and print an error message
     freeaddrinfo(result);
 
     if (ConnectSocket == INVALID_SOCKET) {
@@ -169,7 +162,6 @@ int main()
     sendThread.join();
     recvThread.join();
 
-    // Cleanup
     closesocket(ConnectSocket);
     WSACleanup();
     return 0;

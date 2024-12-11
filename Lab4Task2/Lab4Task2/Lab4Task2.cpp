@@ -132,7 +132,7 @@ DWORD WINAPI Reader(LPVOID param) {
     if (readCount[indx] == 0) {
         ReleaseSemaphore(writeSemaphore[indx], 1, NULL);
     }
-    //ReleaseMutex(mutex[indx]);
+    ReleaseMutex(mutex[indx]);
     std::cout << "Reader " << id << " done its work!\n";
 
     return 0;
