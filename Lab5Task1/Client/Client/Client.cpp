@@ -1,4 +1,6 @@
-﻿#include <windows.h>
+﻿#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdlib.h>
@@ -39,7 +41,7 @@ void static ReceiveMessages() {
         iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
             recvbuf[iResult] = '\0';
-            std::cout << "Server message: " << recvbuf << std::endl;
+            std::cout << recvbuf << std::endl;
         }
         else if (iResult == 0) {
             std::cout << "Connection closed by server." << std::endl;
@@ -56,7 +58,6 @@ void static SendMessages() {
     int iResult;
     char sendbuf[DEFAULT_BUFLEN];
     while (true) {
-        std::cout << " -> Enter msg: ";
         std::cin.getline(sendbuf, sizeof(sendbuf));
 
         size_t len = strlen(sendbuf);
@@ -143,9 +144,6 @@ int main() {
         WSACleanup();
         return 1;
     }
-
-    std::cout << "Bytes sent: " << iResult << std::endl;
-    std::cout << "INSTRUCTIONS:\nEnter message (50 symbols) and '->name' in the end if you want the specific client to be sent the msg." << std::endl;
 
     std::thread recvThread(ReceiveMessages);
     std::thread sendThread(SendMessages);
