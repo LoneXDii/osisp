@@ -58,6 +58,10 @@ void HandleClient(SOCKET ClientSocket) {
     }
     std::cout << "Client connected: " << recvbuf << std::endl;
 
+    std::string message = std::string("Client connected: ") + recvbuf;
+    std::string id = recvbuf;
+    BroadcastMessage(message, ClientSocket);
+
     do {
         iResult = recv(ClientSocket, recvbuf, recvbuflen, 0); 
         std::cout << "Bytes received: " << iResult << std::endl;
@@ -127,6 +131,8 @@ void HandleClient(SOCKET ClientSocket) {
     }
 
     std::cout << "Client " << clientName << " removed from list." << std::endl;
+    message = std::string("Client disconnected: ") + id;
+    BroadcastMessage(message, ClientSocket);
     closesocket(ClientSocket);
     return;
 }
